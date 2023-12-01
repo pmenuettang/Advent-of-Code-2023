@@ -76,12 +76,6 @@ pub fn day1_step1() -> Result<u64, io::Error> {
 /// # use advent_of_code_2023::day1::first_digit;
 /// let digit = first_digit("abc4e6gh9jkl".as_bytes());
 /// assert_eq!(digit, Some(4));
-///
-/// let digit = first_digit("ab4".as_bytes());
-/// assert_eq!(digit, Some(4));
-///
-/// let digit = first_digit("abcdefghijkl".as_bytes());
-/// assert_eq!(digit, None);
 /// ```
 pub fn first_digit(line: &[u8]) -> Option<u64> {
     for c in line.iter() {
@@ -108,12 +102,6 @@ pub fn first_digit(line: &[u8]) -> Option<u64> {
 /// # use advent_of_code_2023::day1::last_digit;
 /// let digit = last_digit("abc4e6gh9j11l".as_bytes());
 /// assert_eq!(digit, Some(1));
-///
-/// let digit = last_digit("ab4".as_bytes());
-/// assert_eq!(digit, Some( 4));
-///
-/// let digit = last_digit("abcdefghijkl".as_bytes());
-/// assert_eq!(digit, None);
 /// ```
 pub fn last_digit(line: &[u8]) -> Option<u64> {
     for c in line.iter().rev() {
@@ -137,8 +125,6 @@ pub fn last_digit(line: &[u8]) -> Option<u64> {
 /// ```
 /// # use advent_of_code_2023::day1::byte_to_u64;
 /// assert_eq!(byte_to_u64(b'a'), None);
-/// assert_eq!(byte_to_u64(b'z'), None);
-/// assert_eq!(byte_to_u64(b'4'), Some(4));
 /// assert_eq!(byte_to_u64(b'2'), Some(2));
 /// ```
 pub fn byte_to_u64(c: u8) -> Option<u64> {
@@ -183,8 +169,6 @@ pub fn day1_step2() -> Result<u64, io::Error> {
             let first = first_named_digit(line).unwrap_or_default();
             let last = last_named_digit(line).unwrap_or_default();
 
-            println!("{l} {first} {last}");
-
             first * 10 + last
         })
         .sum::<u64>();
@@ -227,27 +211,6 @@ const ALL_DIGITS: [(&[u8], u64); 9] = [
 /// # use advent_of_code_2023::day1::first_named_digit;
 /// let digit = first_named_digit("abc4esixghninejkl".as_bytes());
 /// assert_eq!(digit, Some(4));
-///
-/// let digit = first_named_digit("abthreede6gh9jkl".as_bytes());
-/// assert_eq!(digit, Some(3));
-///
-/// let digit = first_named_digit("aone".as_bytes());
-/// assert_eq!(digit, Some(1));
-///
-/// let digit = first_named_digit("onea".as_bytes());
-/// assert_eq!(digit, Some(1));
-///
-/// let digit = first_named_digit("81s".as_bytes());
-/// assert_eq!(digit, Some(8));
-///
-/// let digit = first_named_digit("ab4".as_bytes());
-/// assert_eq!(digit, Some(4));
-///
-/// let digit = first_named_digit("fjbbtgone5".as_bytes());
-/// assert_eq!(digit, Some(1));
-///
-/// let digit = first_named_digit("7v".as_bytes());
-/// assert_eq!(digit, Some(7));
 ///
 /// let digit = first_named_digit("abcde".as_bytes());
 /// assert_eq!(digit, None);
@@ -317,21 +280,6 @@ fn slice_to_first_u64(slice: &[u8]) -> Option<u64> {
 /// let digit = last_named_digit("abc4e6ghninejelevenl".as_bytes());
 /// assert_eq!(digit, Some(9));
 ///
-/// let digit = last_named_digit("abc4e6gh8jelevenl".as_bytes());
-/// assert_eq!(digit, Some(8));
-///
-/// let digit = last_named_digit("twoa".as_bytes());
-/// assert_eq!(digit, Some(2));
-///
-/// let digit = last_named_digit("atwo".as_bytes());
-/// assert_eq!(digit, Some(2));
-///
-/// let digit = last_named_digit("81s".as_bytes());
-/// assert_eq!(digit, Some(1));
-///
-/// let digit = last_named_digit("ab4".as_bytes());
-/// assert_eq!(digit, Some(4));
-///
 /// let digit = last_named_digit("abcde".as_bytes());
 /// assert_eq!(digit, None);
 /// ```
@@ -385,4 +333,90 @@ fn slice_to_last_u64(slice: &[u8]) -> Option<u64> {
     }
 
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_first_digit() {
+        let digit = first_digit("abc4ef7".as_bytes());
+        assert_eq!(digit, Some(4));
+
+        let digit = first_digit("abcdefghijkl".as_bytes());
+        assert_eq!(digit, None);
+    }
+
+    #[test]
+    fn test_last_digit() {
+        let digit = last_digit("abc4ef7".as_bytes());
+        assert_eq!(digit, Some(7));
+
+        let digit = last_digit("abcdefghijkl".as_bytes());
+        assert_eq!(digit, None);
+    }
+
+    #[test]
+    fn test_byte_to_u64() {
+        assert_eq!(byte_to_u64(b'z'), None);
+        assert_eq!(byte_to_u64(b'0'), Some(0));
+        assert_eq!(byte_to_u64(b'1'), Some(1));
+        assert_eq!(byte_to_u64(b'2'), Some(2));
+        assert_eq!(byte_to_u64(b'3'), Some(3));
+        assert_eq!(byte_to_u64(b'4'), Some(4));
+        assert_eq!(byte_to_u64(b'5'), Some(5));
+        assert_eq!(byte_to_u64(b'6'), Some(6));
+        assert_eq!(byte_to_u64(b'7'), Some(7));
+        assert_eq!(byte_to_u64(b'8'), Some(8));
+        assert_eq!(byte_to_u64(b'9'), Some(9));
+    }
+
+    #[test]
+    fn test_first_named_digit() {
+        let digit = first_named_digit("abthreede6gh9jkl".as_bytes());
+        assert_eq!(digit, Some(3));
+
+        let digit = first_named_digit("aone".as_bytes());
+        assert_eq!(digit, Some(1));
+
+        let digit = first_named_digit("onea".as_bytes());
+        assert_eq!(digit, Some(1));
+
+        let digit = first_named_digit("81s".as_bytes());
+        assert_eq!(digit, Some(8));
+
+        let digit = first_named_digit("ab4".as_bytes());
+        assert_eq!(digit, Some(4));
+
+        let digit = first_named_digit("fjbbtgone5".as_bytes());
+        assert_eq!(digit, Some(1));
+
+        let digit = first_named_digit("7v".as_bytes());
+        assert_eq!(digit, Some(7));
+
+        let digit = first_named_digit("xiv".as_bytes());
+        assert_eq!(digit, None);
+    }
+
+    #[test]
+    fn test_last_named_digit() {
+        let digit = last_named_digit("abc4e6gh8jelevenl".as_bytes());
+        assert_eq!(digit, Some(8));
+
+        let digit = last_named_digit("twoa".as_bytes());
+        assert_eq!(digit, Some(2));
+
+        let digit = last_named_digit("atwo".as_bytes());
+        assert_eq!(digit, Some(2));
+
+        let digit = last_named_digit("81s".as_bytes());
+        assert_eq!(digit, Some(1));
+
+        let digit = last_named_digit("ab4".as_bytes());
+        assert_eq!(digit, Some(4));
+
+        let digit = last_named_digit("abcdef".as_bytes());
+        assert_eq!(digit, None);
+    }
 }
